@@ -1,0 +1,27 @@
+    body {
+        background-color: #dbebfa;
+    }
+
+    td {
+        width: 20%;
+    }
+
+    .categorySect {
+        display: inline-flex;
+        margin-top: 20px;
+
+    }
+
+    .row {
+        text-align: center;
+        margin-top: 5px;
+    }
+
+
+    .moreInfoBtn {
+        margin: 10px 0 10px 0;
+    }
+
+    .fa-star {
+        color: #e4e932;
+    }
