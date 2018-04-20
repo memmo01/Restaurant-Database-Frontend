@@ -303,5 +303,17 @@ function sendData(data){
 
 }
 
+$(".searchSubmit").on("click",function(e){
+    e.preventDefault()
+    var name = $(".restSearch").val()
+    
+    $.get("/api/find/restaraunt/"+name,function(results){
+    
+      
+            toPage(results)
+    
+    })
+})
+
 
 

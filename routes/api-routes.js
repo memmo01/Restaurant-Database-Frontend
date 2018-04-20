@@ -8,6 +8,7 @@ module.exports=function(app){
             res.json(results)
         })
     })
+     
 
      app.get("/api/:search?/:title?",function(req,res){
         db.places.findAll({
@@ -18,6 +19,15 @@ module.exports=function(app){
             res.json(results)
         })
     })
+    app.get("/api/find/restaraunt/:input?",function(req,res){
+        db.places.findAll({
+            where:{
+                rest_name: req.params.input
+            }
+        }).then(function(results){
+            res.json(results);
+        })
+    })
 
     app.post("/api/newRestaurant",function(req,res){
         db.places.create(req.body).then(function(results){
@@ -25,5 +35,7 @@ module.exports=function(app){
             console.log("made it")
         })
     })
+
+
     
 }
