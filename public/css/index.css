@@ -1,6 +1,12 @@
     body {
-        background-color: #dbebfa;
+        /* background-color: #dbebfa; */
+        background-repeat: no-repeat;
+        background-size: cover;
+          -webkit-transition: background-image 1s ease-in-out; 
     }
+ .results{
+     background-color: aliceblue;
+ }
 
     td {
         width: 20%;
