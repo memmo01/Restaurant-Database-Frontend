@@ -1,35 +1,11 @@
 let a =0;
 let b =0;
-var imageCount=0;
 
-
-
-var backgroundImages={
-    img:["'../wallpaper/restPic5.jpg'","../wallpaper/restPic2.jpg","../wallpaper/restPic3.jpg","../wallpaper/restPic4.jpg","../wallpaper/restPic6.jpg"],
-}
 
 $(".addRest").on("click",function(){
     populateAddRest()
     
 })
-
-imageCount = Math.ceil(Math.random()*backgroundImages.img.length);
-
-$("body").css("background-image","url("+backgroundImages.img[imageCount]+")")
-console.log(imageCount)
-
-
-setInterval(function(){
-    $("body").css("background-image","url("+backgroundImages.img[imageCount]+")")
-    checkCount()
-},1000 *30)
-
-function checkCount(){
-    imageCount++;
-    if(imageCount == backgroundImages.img.length ){
-        imageCount=0
-    }
-}
 
 
 function toPage(data){
@@ -105,9 +81,11 @@ $(".categoryBTN").on("click",function(){
 })
 $(".clear").on("click",function(){
     $(".results").empty()
+    $(".results").css("display","none")
 })
 
 $(".findAllOption").on("click",function(){
+    $(".results").css("display","block")
 a=0;
 b=10;
     trial1(a,b)
@@ -214,6 +192,7 @@ function pages(direction, results){
 
 
 function getInfo(group,category){
+    $(".results").css("display","block")
 
      $.get("/api/"+group+"/"+category, function(results){
         toPage(results)
@@ -224,16 +203,58 @@ function getInfo(group,category){
 
 function populateModalInfo(id){
     $.get("/api/list",function(results){
-      for(i=0;i<results.length;i++){
-          if(results[i].id == id){
-           $(".modal-title").html(results[i].rest_name)
-           
-           $(".modal-body").append(results[i].rating)
-           $(".modal-body").append(results[i].comments)
-      }
-        }    })
 
+        yelpApiInfo(results,id)
+        })
 }
+
+    function yelpApiInfo(results, id){
+
+     var comments;
+         for(i=0;i<results.length;i++){
+          if(results[i].id == id){
+              if(results[i].comments == null){
+                  comments ="no comments added"
+              }
+                else{
+                    comments=results[i].comments;
+                }
+
+            $(".modal-title").html(results[i].rest_name)
+
+            var image =$("<img>");
+                image.addClass("restImage");
+                image.attr("src", "pic.js")
+                image.attr("alt", "picture"+id)
+
+                var pageDetails ="<div>Location: "+ results[i].location+"</div><br>";
+                pageDetails+="<div> Style of food: "+ results[i].nationality+"</div><br>";
+                pageDetails+="<div> comments: "+comments+"</div><br>";
+                pageDetails+="<button id='edit'>Edit Info</button>";
+
+           
+           
+           $(".modal-body").append(image)
+           $(".modal-body").append(pageDetails)
+      }
+        } 
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function populateAddRest(){
 $(".modal-title").empty();
@@ -295,7 +316,7 @@ var  restInput="<form>  <div class='form-group'>";
     restInput+="<textarea class='form-control' id='commentInput' rows='3'></textarea>";
     restInput+="</div><form>"
 
-let submitBtn= "<button type='button' class='btn btn-primary restSubmit'>Submit Restaurant</button>";
+let submitBtn= "<button type='button' class='btn btn-primary restSubmit' data-dismiss='modal'>Submit Restaurant</button>";
 
     $(".modal-body").html(restInput)
     $(".modal-footer").html(submitBtn)
@@ -323,20 +344,28 @@ function sendData(data){
  $.post("/api/newRestaurant",data,function(){
      console.log("added")
  })
+    runTextSearch(data.rest_name)
+
 
 }
 
 $(".searchSubmit").on("click",function(e){
     e.preventDefault()
     var name = $(".restSearch").val()
-    
-    $.get("/api/find/restaraunt/"+name,function(results){
+    runTextSearch(name)
+  
+})
+
+function runTextSearch(name){    
+    $(".results").css("display","block")
+
+  $.get("/api/find/restaraunt/"+name,function(results){
     
       
             toPage(results)
     
     })
-})
+}
 
 
 

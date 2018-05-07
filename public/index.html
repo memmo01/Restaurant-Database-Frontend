@@ -17,6 +17,7 @@
 </head>
 
 <body>
+    
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="col-lg-3">
             <a class="navbar-brand" href="#">Personal Restaurant Database</a>
@@ -25,23 +26,33 @@
 
 
         <div class="col-lg-2">
-            <button type="button" class="btn btn-primary btn-sm btn addRest" data-toggle='modal' data-target='#restModal'>Add New Resaurant</button>
-        </div>
-        <div class="col-lg-2">
-        </div>
-        <div class="col-lg-3">
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2 restSearch" type="search" placeholder="Search Restaurant Name" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0 searchSubmit" type="submit">Search</button>
-            </form>
+          
         </div>
         <div class="col-lg-1">
+        </div>
+        <div class="col-lg-3">
+            
+        </div>
+        <div class="col-lg-3">
+              <button type="button" class="btn btn-primary btn-sm btn addRest" data-toggle='modal' data-target='#restModal'>Add New Resaurant</button>
             <button type="button" class="btn btn-secondary btn-sm btn clear">Clear Results</button>
 
         </div>
     </nav>
-
+<div class="col-lg-12 container-fluid">
 <div class="rest-container">
+    <div class="row">
+        <div class="col-lg-3">
+        </div>
+        <div class="col-lg-8">
+        <form class="form-inline my-2 my-lg-0 searchForm">
+                <input class="col-lg-9 form-control mr-sm-2 restSearch" type="search" placeholder="Search Restaurant Name" aria-label="Search">
+                <button class="col-lg-1 btn btn-success my-2 my-sm-0 searchSubmit" type="submit">Search</button>
+            </form>
+        </div>
+        <div class="col">
+        </div>
+    </div>
     <div class="row">
         <div class="col">
         </div>
@@ -213,9 +224,12 @@
         </div>
     </div>
 </div>
+    </div>
 
     <script type="text/javascript" src="/js/index.js">
-    </script>
+</script>
+<script type="text/javascript" src="/js/background.js">
+</script>
 </body>
 
 </html>
