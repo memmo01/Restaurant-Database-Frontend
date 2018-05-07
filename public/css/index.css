@@ -41,3 +41,7 @@
     .restImage{
         margin:30px 0 30px 40%;
     }
+    .editIcon:hover{
+       cursor:pointer;
+        
+    }

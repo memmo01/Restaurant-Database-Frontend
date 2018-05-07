@@ -42,6 +42,7 @@ if(package.rating === 1){
     stars= starIcon;
 }
 else if(package.rating ===2){
+    
     stars= starIcon+starIcon;
 
 }else if(package.rating === 3){
@@ -202,6 +203,7 @@ function getInfo(group,category){
 
 
 function populateModalInfo(id){
+    $(".modal-body").empty()
     $.get("/api/list",function(results){
 
         yelpApiInfo(results,id)
@@ -227,19 +229,88 @@ function populateModalInfo(id){
                 image.attr("src", "pic.js")
                 image.attr("alt", "picture"+id)
 
-                var pageDetails ="<div>Location: "+ results[i].location+"</div><br>";
-                pageDetails+="<div> Style of food: "+ results[i].nationality+"</div><br>";
-                pageDetails+="<div> comments: "+comments+"</div><br>";
-                pageDetails+="<button id='edit'>Edit Info</button>";
+                var pageDetails ="<div><button type='button' class='btn btn-light btn-sm editButton' id='locationEdit' data-id="+id+"><i class='far fa-edit fa-xs'></i></button>  Location: "+ results[i].location+"</div><br>";
+                pageDetails+="<div><button type='button' class='btn btn-light btn-sm editButton' id='nationalityEdit' data-id="+id+"><i class='far fa-edit fa-xs'></i></button>  Style of food: "+ results[i].nationality+"</div><br>";
+                pageDetails+="<div><button type='button' class='btn btn-light btn-sm editButton' id='commentEdit' data-id="+id+"><i class='far fa-edit fa-xs'></i></button> comments: <br>"+comments+"</div><br>";
+          
 
            
            
            $(".modal-body").append(image)
            $(".modal-body").append(pageDetails)
+           
       }
+        
         } 
+    $(".editButton").on("click",function(e){
+        alert($(this).data('id'))
+        var areaToEdit = (e.currentTarget.id)
+
+        switch(areaToEdit){
+            case "locationEdit":
+            editDatabase(id, "location");
+            break;
+
+            case "nationalityEdit":
+            editDatabase(id, "nationality");
+            break;
+
+            case "commentEdit":
+            editDatabase(id,"comments",comments);
+        
+        }
+    })
+    
 
     }
+
+
+//this populates an input box and whatever information is submitted to it will update the location value in the 
+//database and repopulate the restaurant info with the updated data
+    function editDatabase(id,areaEdited,comments){
+        alert("location worked")
+
+        var locationInput= "<input placeholder='Edit location' >"
+
+        var natInput="<div class='form-group'>";
+        natInput+="<label for='nationalityInput'>Edit Region</label>";
+        natInput+="<select multiple class='form-control' id='nationalityInput'>";
+        natInput+="<option value='North America'>North American</option><option value='Asian'>Asian</option><option value='European'>European</option><option value='South American'>South American</option><option value='African'>African</option>";
+        natInput+="</select></div>";
+
+        var commentInput="<div class='form-group'";
+            commentInput+="<label for='commentInput'>edit comment</label>"
+            commentInput+="<textarea class='form-control' id='commentInput' rows='3'>"+comments+"</textarea></div>"
+       
+            var submitBtn = "<button id='submitEdit'>submit</button>"
+
+
+        switch(areaEdited){
+            case "location":
+            $(".modal-body").html(locationInput+submitBtn)
+            
+            break;
+
+            case "nationality":
+            $(".modal-body").html(natInput+submitBtn);
+            
+            break;
+
+            case "comments":            
+            $(".modal-body").html(commentInput+submitBtn);
+            
+        }
+        
+        $("#submitEdit").on("click",function(){
+            populateModalInfo(id)
+        })
+    }
+
+
+
+
+
+    
 
 
 
