@@ -18,7 +18,9 @@ the program.
 - MySQL
 
 
-##Install
+## Installation
+
+- in terminal type: npm install
 
 
 ## Author
