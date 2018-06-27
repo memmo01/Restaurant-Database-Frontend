@@ -213,6 +213,8 @@ function populateModalInfo(id){
     function yelpApiInfo(results, id){
 
      var comments;
+     var location;
+
          for(i=0;i<results.length;i++){
           if(results[i].id == id){
               if(results[i].comments == null){
@@ -224,53 +226,42 @@ function populateModalInfo(id){
 
             $(".modal-title").html(results[i].rest_name)
 
+            location = results[i].location;
+
             var image =$("<img>");
                 image.addClass("restImage");
                 image.attr("src", "pic.js")
                 image.attr("alt", "picture"+id)
 
-                var pageDetails ="<div><button type='button' class='btn btn-light btn-sm editButton' id='locationEdit' data-id="+id+"><i class='far fa-edit fa-xs'></i></button>  Location: "+ results[i].location+"</div><br>";
-                pageDetails+="<div><button type='button' class='btn btn-light btn-sm editButton' id='nationalityEdit' data-id="+id+"><i class='far fa-edit fa-xs'></i></button>  Style of food: "+ results[i].nationality+"</div><br>";
-                pageDetails+="<div><button type='button' class='btn btn-light btn-sm editButton' id='commentEdit' data-id="+id+"><i class='far fa-edit fa-xs'></i></button> comments: <br>"+comments+"</div><br>";
+                var pageDetails ="<div>  Location: "+ location+"</div><br>";
+                pageDetails+="<div> Style of food: "+ results[i].nationality+"</div><br>";
+                pageDetails+="<div> comments: <br>"+comments+"</div><br>";
           
 
-           
+           eBtn= "<button type='button' class='btn btn-light btn-sm editButton' id='commentEdit' data-id="+id+"><i class='far fa-edit fa-xs'></i></button>"
            
            $(".modal-body").append(image)
+           
+            $(".modal-title").html(eBtn+results[i].rest_name)
            $(".modal-body").append(pageDetails)
            
       }
         
         } 
     $(".editButton").on("click",function(e){
-        alert($(this).data('id'))
-        var areaToEdit = (e.currentTarget.id)
+      
+            editDatabase(id,location,comments);
 
-        switch(areaToEdit){
-            case "locationEdit":
-            editDatabase(id, "location");
-            break;
-
-            case "nationalityEdit":
-            editDatabase(id, "nationality");
-            break;
-
-            case "commentEdit":
-            editDatabase(id,"comments",comments);
-        
-        }
     })
-    
-
-    }
 
 
 //this populates an input box and whatever information is submitted to it will update the location value in the 
 //database and repopulate the restaurant info with the updated data
-    function editDatabase(id,areaEdited,comments){
-        alert("location worked")
+    function editDatabase(id,location,comments){
 
-        var locationInput= "<input placeholder='Edit location' >"
+        // var inputId;
+
+        var locationInput= "<input id='locationEdit' value='"+location+"' >"
 
         var natInput="<div class='form-group'>";
         natInput+="<label for='nationalityInput'>Edit Region</label>";
@@ -285,39 +276,31 @@ function populateModalInfo(id){
             var submitBtn = "<button id='submitEdit'>submit</button>"
 
 
-        switch(areaEdited){
-            case "location":
-            $(".modal-body").html(locationInput+submitBtn)
-            
-            break;
-
-            case "nationality":
-            $(".modal-body").html(natInput+submitBtn);
-            
-            break;
-
-            case "comments":            
-            $(".modal-body").html(commentInput+submitBtn);
-            
-        }
+     $(".modal-body").html(locationInput + natInput + commentInput+ submitBtn)
         
         $("#submitEdit").on("click",function(){
+           
+            var x=$("#nationalityInput").val()
+           
+            var info={
+                nationality:x[0],
+                comments:$("#commentInput").val(),
+                location:$("#locationEdit").val(),
+                id:id
+            }
+
+             $.ajax({
+               url:"/api/update",
+               method:"PUT",
+               data: info
+           }).done(function(){
+               console.log("added")
+           
+
             populateModalInfo(id)
+           })
         })
-    }
-
-
-
-
-
-    
-
-
-
-
-
-
-
+    }}
 
 
 

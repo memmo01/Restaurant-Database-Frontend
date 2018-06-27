@@ -35,7 +35,22 @@ module.exports=function(app){
             console.log("made it")
         })
     })
+    
+
+    app.put("/api/update", function(req,res){
+        db.places.update({
+            // nationality:req.body.nationality,
+            comments:req.body.comments,
+            location:req.body.location
+        },{
+        where:{
+            id:req.body.id
+        }
+    }).then(function(results){
+        res.json(results)
+    })
 
 
     
+})
 }
